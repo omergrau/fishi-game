@@ -38,6 +38,7 @@ class game():
         for _ in range(10):
             self.fishlist.add(Fish.fish(WIDTH, HEIGHT))
 
+
     def toggle_fullscreen(self):# toggle the fullscreen from regular to fullscreen and vice versa
         if self.fullscreen:
             self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
@@ -118,6 +119,7 @@ class game():
 
     def update_game(self):# update the game state and draw the background
         self.screen.blit(pygame.image.load(self.images["ocean"]).convert(), (0, 0))
+        #self.screen.blit(self.images["ocean"].convert(), (0, 0))
         if self.game_mode == "quit":
             self.running = False
         if self.game_mode == "game over":
