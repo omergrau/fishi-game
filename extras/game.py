@@ -1,6 +1,8 @@
 import pygame
 import asyncio
 from pygame import MOUSEMOTION
+#from pygame.examples.sprite_texture import clock
+
 from extras import Player, Fish,resources
 import os
 import sys
@@ -13,8 +15,7 @@ class game():
         self.pause = False
         self.fullscreen=False
         self.pause_pressed = False
-        self.entry_resources = entry_load()
-        """load the game resources // (ocean_image,lose_video_,gamemain_game_music"""
+        self.entry_resources = entry_load()#load the game resources // (ocean_image,lose_video_,gamemain_game_music
         lose_video_game = self.entry_resources[1]
         self.high_score = 0
         self.game_mode = "game"

@@ -1,5 +1,7 @@
 # Default ignored files
+extras/__pycache__/
 /shelf/
 *.pyc
 __pycache__/
 /workspace.xml
+build/web/

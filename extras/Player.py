@@ -3,13 +3,13 @@ from extras import resources
 
 
 class player(pygame.sprite.Sprite):
-    def __init__(self, WIDTH, HEIGHT,crunch):
+    def __init__(self, WIDTH, HEIGHT,crunch,left_image=0,right_image=0):
         super().__init__()
-        self.picturs = [("my fish left.png","my fish right.png"), ("level_2_left.PNG", "level_2.PNG")]
+        self.picturs = [("../assets/images/my fish left.png","../assets/images/my fish right.png")]
         self.x = WIDTH // 2
         self.y = HEIGHT // 2
         self.score = 0
-        self.speed = 0.25
+        self.speed = 0.3
         self.level = -1
         self.slowdownspeed = 0.5
         self.accelartionx = 0
@@ -24,7 +24,7 @@ class player(pygame.sprite.Sprite):
 
 
 
-    def update(self):
+    def update(self):# update the player location and check for collision with the game borders 
         if pygame.time.get_ticks() - self.dellay > 5:
             if self.accelartiony > 0:
                 self.accelartiony -= self.slowdownspeed
@@ -45,7 +45,7 @@ class player(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.check_borders()
 
-    def eating(self,size):
+    def eating(self,size):# Feeding the fish - increase the player size and score
         self.score += 1
         self.size += size // 20
         self.image = pygame.transform.scale(self.image, (self.size, self.size))
@@ -54,7 +54,7 @@ class player(pygame.sprite.Sprite):
         self.eating_music.play()
         pygame.mixer.music.set_volume(0.5)
 
-    def level_up(self):
+    def level_up(self):# level up the player - increase the player size and score)(not in use)
         self.level += 1
         self.score=0
         if len(self.picturs) == self.level:
@@ -70,7 +70,7 @@ class player(pygame.sprite.Sprite):
         self.images = (image_left, image_right)
         self.image= self.images[1]
 
-    def move(self, keys):
+    def move(self, keys):# move the player based on the keys pressed
         if keys[pygame.K_LEFT]:
             self.lastmove = pygame.time.get_ticks()
             if abs(self.accelartionx) < 5:
@@ -106,7 +106,7 @@ class player(pygame.sprite.Sprite):
                     self.accelartiony += self.speed
             self.y += self.speed
 
-    def check_borders(self):
+    def check_borders(self):# check if the player is out of the game borders and set the player location to the other side of the screen
         if self.x < 0:
             self.x = 982
         if self.x > 982:
