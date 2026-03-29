@@ -32,6 +32,8 @@ class game():
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)
         pygame.display.set_caption("fish eat fish")
+        self.background = pygame.image.load(self.images["ocean"]).convert()
+
         player1: player = Player.player(WIDTH, HEIGHT, self.sounds["eat"], self.images["my fish left"],
                                         self.images["my fish right"])
         self.players.add(player1)
@@ -118,7 +120,7 @@ class game():
         self.screen.blit(score_text, score_rect)
 
     def update_game(self):# update the game state and draw the background
-        self.screen.blit(pygame.image.load(self.images["ocean"]).convert(), (0, 0))
+        self.screen.blit(self.background, (0, 0))
         #self.screen.blit(self.images["ocean"].convert(), (0, 0))
         if self.game_mode == "quit":
             self.running = False
