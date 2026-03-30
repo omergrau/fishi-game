@@ -70,6 +70,42 @@ class player(pygame.sprite.Sprite):
         self.images = (image_left, image_right)
         self.image= self.images[1]
 
+    """def move(self, keys):# move the player based on the keys pressed
+        if keys[pygame.K_LEFT]:
+            self.lastmove = pygame.time.get_ticks()
+            if abs(self.accelartionx) < 5:
+
+                if pygame.time.get_ticks() - self.dellay > 15:
+                    self.dellay = pygame.time.get_ticks()
+                    self.accelartionx -= self.speed
+            self.x += self.speed
+            self.image = pygame.transform.scale(self.images[0], (self.size, self.size))
+            self.mask = pygame.mask.from_surface(self.image)
+        if keys[pygame.K_RIGHT]:
+            self.lastmove = pygame.time.get_ticks()
+            self.image = self.images[1]
+            if abs(self.accelartionx) < 5:
+                if pygame.time.get_ticks() - self.dellay > 15:
+                    self.dellay = pygame.time.get_ticks()
+                    self.accelartionx += self.speed
+            self.x += self.speed
+            self.image = pygame.transform.scale(self.images[1], (self.size, self.size))
+            self.mask = pygame.mask.from_surface(self.image)
+        if keys[pygame.K_UP]:
+            self.lastmove = pygame.time.get_ticks()
+            if abs(self.accelartiony) < 5:
+                if pygame.time.get_ticks() - self.dellay > 15:
+                    self.dellay = pygame.time.get_ticks()
+                    self.accelartiony -= self.speed
+            self.y -= self.speed
+        if keys[pygame.K_DOWN]:
+            self.lastmove = pygame.time.get_ticks()
+            if abs(self.accelartiony) < 5:
+                if pygame.time.get_ticks() - self.dellay > 15:
+                    self.dellay = pygame.time.get_ticks()
+                    self.accelartiony += self.speed
+            self.y += self.speed"""
+
     def move(self, keys):# move the player based on the keys pressed
         if keys[pygame.K_LEFT]:
             self.lastmove = pygame.time.get_ticks()

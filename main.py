@@ -164,6 +164,7 @@ class game():
                 if self.game_mode == "quit":
                     break
                 self.clock.tick(FPS)
+                dt = self.clock.tick(FPS) / 1000
             pygame.display.flip()
             await asyncio.sleep(0)
         pygame.quit()
