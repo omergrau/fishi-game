@@ -9,9 +9,9 @@ class player(pygame.sprite.Sprite):
         self.x = WIDTH // 2
         self.y = HEIGHT // 2
         self.score = 0
-        self.speed = 0.3
+        self.speed = 0.55
         self.level = -1
-        self.slowdownspeed = 0.5
+        self.slowdownspeed = 0.9
         self.accelartionx = 0
         self.accelartiony = 0
         self.size = 50
@@ -22,26 +22,38 @@ class player(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.eating_music = pygame.mixer.Sound(crunch)
 
+    def update(self, dt):  # dt in seconds
+        slowdown = self.slowdownspeed * dt * 20
+        idle_time = (pygame.time.get_ticks() - self.lastmove) / 1000
 
-
-    def update(self):# update the player location and check for collision with the game borders 
-        if pygame.time.get_ticks() - self.dellay > 5:
-            if self.accelartiony > 0:
-                self.accelartiony -= self.slowdownspeed
+        if self.accelartiony > 0:
+            self.accelartiony -= slowdown
             if self.accelartiony < 0:
-                self.accelartiony += self.slowdownspeed
-            if self.accelartionx > 0:
-                self.accelartionx -= self.slowdownspeed
+                self.accelartiony = 0
+        if self.accelartiony < 0:
+            self.accelartiony += slowdown
+            if self.accelartiony > 0:
+                self.accelartiony = 0
+
+        if self.accelartionx > 0:
+            self.accelartionx -= slowdown
             if self.accelartionx < 0:
-                self.accelartionx += self.slowdownspeed
-            self.dellay = pygame.time.get_ticks()
-        if abs(self.accelartionx) < 1 and  pygame.time.get_ticks() - self.lastmove > 100:
+                self.accelartionx = 0
+        if self.accelartionx < 0:
+            self.accelartionx += slowdown
+            if self.accelartionx > 0:
+                self.accelartionx = 0
+
+        if abs(self.accelartionx) < 1 and idle_time > 0.1:
             self.accelartionx = 0
-        if abs(self.accelartiony) < 1 and  pygame.time.get_ticks() - self.lastmove > 100:
+        if abs(self.accelartiony) < 1 and idle_time > 0.1:
             self.accelartiony = 0
-        self.x += self.accelartionx
-        self.y += self.accelartiony
-        self.rect.topleft = (self.x + self.accelartionx, self.y + self.accelartiony)
+
+        self.x += self.accelartionx * dt * 60
+        self.y += self.accelartiony * dt * 60
+
+        self.rect.topleft = (int(self.x + self.accelartionx * dt * 60),
+                             int(self.y + self.accelartiony * dt * 60))
         self.mask = pygame.mask.from_surface(self.image)
         self.check_borders()
 
@@ -70,7 +82,7 @@ class player(pygame.sprite.Sprite):
         self.images = (image_left, image_right)
         self.image= self.images[1]
 
-    def move(self, keys):# move the player based on the keys pressed
+    """def move(self, keys):# move the player based on the keys pressed
         if keys[pygame.K_LEFT]:
             self.lastmove = pygame.time.get_ticks()
             if abs(self.accelartionx) < 5:
@@ -104,7 +116,34 @@ class player(pygame.sprite.Sprite):
                 if pygame.time.get_ticks() - self.dellay > 15:
                     self.dellay = pygame.time.get_ticks()
                     self.accelartiony += self.speed
-            self.y += self.speed
+            self.y += self.speed"""
+
+    def move(self, keys, dt):
+        accel_step = self.speed * dt * 60
+
+        if keys[pygame.K_LEFT]:
+            self.lastmove = pygame.time.get_ticks()
+            if abs(self.accelartionx) < 5:
+                self.accelartionx -= accel_step
+            self.image = pygame.transform.scale(self.images[0], (self.size, self.size))
+            self.mask = pygame.mask.from_surface(self.image)
+
+        if keys[pygame.K_RIGHT]:
+            self.lastmove = pygame.time.get_ticks()
+            if abs(self.accelartionx) < 5:
+                self.accelartionx += accel_step
+            self.image = pygame.transform.scale(self.images[1], (self.size, self.size))
+            self.mask = pygame.mask.from_surface(self.image)
+
+        if keys[pygame.K_UP]:
+            self.lastmove = pygame.time.get_ticks()
+            if abs(self.accelartiony) < 5:
+                self.accelartiony -= accel_step
+
+        if keys[pygame.K_DOWN]:
+            self.lastmove = pygame.time.get_ticks()
+            if abs(self.accelartiony) < 5:
+                self.accelartiony += accel_step
 
     def check_borders(self):# check if the player is out of the game borders and set the player location to the other side of the screen
         if self.x < 0:

@@ -14,7 +14,7 @@ class fish(pygame.sprite.Sprite):#enemy fish class
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
         self.level=0
-        self.speed = random.randint(1, 6)
+        self.speed = random.randint(60, 240)
         if self.x ==-199:
             self.direction = 1
         else:
@@ -44,9 +44,9 @@ class fish(pygame.sprite.Sprite):#enemy fish class
         if self.y > 736:
             self.y = 736
 
-    def update(self):# update the fish location and check for collision with the game borders
-        self.x += self.speed * self.direction
-        self.rect.topleft = (self.x, self.y)
+    def update(self, dt):  # update the fish location and check for collision with the game borders
+        self.x += self.speed * self.direction * dt
+        self.rect.topleft = (int(self.x), int(self.y))
 
     def isdisappear(self):## check if the fish is out of the screen
         if self.x < -200 or self.x > self.WIDTH:
