@@ -11,3 +11,8 @@ build/
 dist/
 
 *.log
+
+#old_main.py
+#merge game and main.py
+hscore.txt
+pygbag

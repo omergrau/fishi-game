@@ -32,6 +32,8 @@ class game():
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)
         pygame.display.set_caption("fish eat fish")
+        self.background = pygame.image.load(self.images["ocean"]).convert()
+
         player1: player = Player.player(WIDTH, HEIGHT, self.sounds["eat"], self.images["my fish left"],
                                         self.images["my fish right"])
         self.players.add(player1)
@@ -45,19 +47,19 @@ class game():
         else:
             self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-    def update_player(self):# update the player location and check for collision with the enemies
+    def update_player(self, dt):# update the player location and check for collision with the enemies
         keys = pygame.key.get_pressed()
         player1 = self.players.sprites()[0]
-        player1.move(keys)
-        player1.update()
+        player1.move(keys,dt)
+        player1.update(dt)
 
-    def update_enemies(self):# update the enemies location and check for collision with the player
+    def update_enemies(self, dt):# update the enemies location and check for collision with the player
         for fish_i in self.fishlist:
             if fish_i.isdisappear():
                 self.fishlist.remove(fish_i)
                 self.fishlist.add(Fish.fish(WIDTH, HEIGHT))
             else:
-                fish_i.update()
+                fish_i.update(dt)
             player1 = self.players.sprites()[0]
             if pygame.sprite.collide_mask(player1, fish_i):
                 if player1.size > fish_i.size:
@@ -118,7 +120,7 @@ class game():
         self.screen.blit(score_text, score_rect)
 
     def update_game(self):# update the game state and draw the background
-        self.screen.blit(pygame.image.load(self.images["ocean"]).convert(), (0, 0))
+        self.screen.blit(self.background, (0, 0))
         #self.screen.blit(self.images["ocean"].convert(), (0, 0))
         if self.game_mode == "quit":
             self.running = False
@@ -134,9 +136,9 @@ class game():
             score_rect = text.get_rect(center=((WIDTH // 2), (HEIGHT // 2) + 80))
             self.screen.blit(text, score_rect)
 
-    def update(self):# update the game state and draw the background
-        self.update_player()
-        self.update_enemies()
+    def update(self,dt):# update the game state and draw the background
+        self.update_player(dt)
+        self.update_enemies(dt)
         self.update_keyboard_input()
         self.update_game()
 
@@ -150,20 +152,21 @@ class game():
         self.running = True
         self.setup()
         while self.running:
+            dt = self.clock.tick(FPS) / 1000
             self.update_keyboard_input()
             if not self.pause:
                 if self.game_mode == "game over" or self.game_mode == "restart":
                     await self.game_over()
                 self.update_game()
                 if self.game_mode == "game":
-                    self.update()
+                    self.update(dt)
                     self.draw()
                 if self.game_mode == "game over":
                     self.load_high_score()
                     self.save_high_score()
                 if self.game_mode == "quit":
                     break
-                self.clock.tick(FPS)
+
             pygame.display.flip()
             await asyncio.sleep(0)
         pygame.quit()
