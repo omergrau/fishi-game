@@ -49,8 +49,8 @@ class fish(pygame.sprite.Sprite):#enemy fish class
         self.rect.topleft = (int(self.x), int(self.y))
 
     def isdisappear(self):## check if the fish is out of the screen
-        if self.x < -200 or self.x > self.WIDTH:
-            return True
+            return self.x < -200 or self.x > self.WIDTH
+
     def level_up(self,level):## level up the fish - increase the fish size and score)(not in use)
         self.level += 1
 
