@@ -1,5 +1,5 @@
 import asyncio
-
+import random
 import pygame
 
 from extras import Player, Fish
@@ -63,9 +63,14 @@ class game():
                 player1.shield = self.shield_bubble
                 self.shield_bubble = None
         if self.shield_bubble is None and not player1.shield:
-            if now - self.last_bubble_spawn > 0:
-                self.shield_bubble = ShieldBubble(WIDTH, HEIGHT,player1.size)
-                self.last_bubble_spawn = now
+            self.spawn_interval_ms = 15000
+
+            if self.shield_bubble is None and not player1.shield:
+                if now - self.last_bubble_spawn > self.spawn_interval_ms:
+                    self.last_bubble_spawn = now
+                    if random.random() < 0.2:
+                        self.shield_bubble = ShieldBubble(WIDTH, HEIGHT,player1.size)
+                        self.last_bubble_spawn = now
 
     def update_enemies(self, dt):  # update the enemies location and check for collision with the player
         for fish_i in self.fishlist:
