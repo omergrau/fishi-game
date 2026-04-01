@@ -21,6 +21,7 @@ class player(pygame.sprite.Sprite):
         self.image = self.images[1]
         self.mask = pygame.mask.from_surface(self.image)
         self.eating_music = pygame.mixer.Sound(crunch)
+        self.shield = False
 
     def update(self, dt):  # dt in seconds
         slowdown = self.slowdownspeed * dt * 20

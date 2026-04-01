@@ -67,7 +67,10 @@ class game():
                     self.fishlist.remove(fish_i)
                     self.fishlist.add(Fish.fish(WIDTH, HEIGHT))
                 else:
-                    self.game_mode = "game over"
+                    if player1.shield:
+                        player1.shield = False
+                    else:
+                        self.game_mode = "game over"
 
     def draw(self):# draw the game screen and the player and enemies
         self.fishlist.draw(self.screen)
